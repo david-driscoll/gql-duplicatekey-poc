@@ -1,0 +1,201 @@
+﻿schema {
+  query: Query
+}
+
+type NodaTimeOutput {
+  instant: Instant
+  localDate: LocalDate
+  localTime: LocalTime
+  localDateTime: LocalDateTime
+  offsetDateTime: OffsetDateTime
+  offsetTime: OffsetTime
+  period: Period
+  duration: Duration
+  zonedDateTime: ZonedDateTime
+  offset: Offset
+  isoDayOfWeek: IsoDayOfWeek
+}
+
+type Query {
+  nodaTimeTest(inputs: NodaTimeInput!): NodaTimeOutput!
+}
+
+input NodaTimeInput {
+  instant: Instant
+  localDate: LocalDate
+  localTime: LocalTime
+  localDateTime: LocalDateTime
+  offsetDateTime: OffsetDateTime
+  offsetTime: OffsetTime
+  period: Period
+  duration: Duration
+  zonedDateTime: ZonedDateTime
+  offset: Offset
+  isoDayOfWeek: IsoDayOfWeek
+}
+
+"The purpose of the `cost` directive is to define a `weight` for GraphQL types, fields, and arguments. Static analysis can use these weights when calculating the overall cost of a query or response."
+directive @cost("The `weight` argument defines what value to add to the overall cost for every appearance, or possible appearance, of a type, field, argument, etc." weight: String!) on SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM | INPUT_FIELD_DEFINITION
+
+"The purpose of the `@listSize` directive is to either inform the static analysis about the size of returned lists (if that information is statically available), or to point the analysis to where to find that information."
+directive @listSize("The `assumedSize` argument can be used to statically define the maximum length of a list returned by a field." assumedSize: Int "The `slicingArguments` argument can be used to define which of the field's arguments with numeric type are slicing arguments, so that their value determines the size of the list returned by that field. It may specify a list of multiple slicing arguments." slicingArguments: [String!] "The `slicingArgumentDefaultValue` argument can be used to define a default value for a slicing argument, which is used if the argument is not present in a query." slicingArgumentDefaultValue: Int "The `sizedFields` argument can be used to define that the value of the `assumedSize` argument or of a slicing argument does not affect the size of a list returned by a field itself, but that of a list returned by one of its sub-fields." sizedFields: [String!] "The `requireOneSlicingArgument` argument can be used to inform the static analysis that it should expect that exactly one of the defined slicing arguments is present in a query. If that is not the case (i.e., if none or multiple slicing arguments are present), the static analysis may throw an error." requireOneSlicingArgument: Boolean! = true) on FIELD_DEFINITION
+
+"The `@specifiedBy` directive is used within the type system definition language to provide a URL for specifying the behavior of custom scalar definitions."
+directive @specifiedBy("The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types." url: String!) on SCALAR
+
+"""
+The @tag directive is used to apply arbitrary string
+metadata to a schema location. Custom tooling can use
+this metadata during any step of the schema delivery flow,
+including composition, static analysis, and documentation.
+
+interface Book {
+  id: ID! @tag(name: "your-value")
+  title: String!
+  author: String!
+}
+"""
+directive @tag("The name of the tag." name: String!) repeatable on SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE | UNION | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
+
+"""
+Represents a time zone - a mapping between UTC and local time.
+A time zone maps UTC instants to local times - or, equivalently, to the offset from UTC at any particular instant.
+
+Example: `Europe/Zurich`
+"""
+scalar DateTimeZone
+
+"""
+Represents a fixed (and calendar-independent) length of time.
+
+Allowed patterns:
+- `-hh:mm:ss.sssssssss`
+- `-D:hh:mm:ss.sssssssss`
+
+Examples:
+- `-44:00:00.999999999`
+- `-1:20:00:00.999999999`
+"""
+scalar Duration
+
+"Represents an instant on the global timeline, with nanosecond resolution."
+scalar Instant
+
+"""
+Equates the days of the week with their numerical value according to ISO-8601.
+ Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5, Saturday = 6, Sunday = 7.
+"""
+scalar IsoDayOfWeek
+
+"""
+LocalDate represents a date within the calendar, with no reference to a particular time zone or time of day.
+
+Allowed patterns:
+- `YYYY-MM-DD`
+- `YYYY-MM-DD (calendar)`
+
+Examples:
+- `2000-01-01`
+- `2000-01-01 (ISO)`
+"""
+scalar LocalDate
+
+"""
+A date and time in a particular calendar system.
+
+Allowed patterns:
+- `YYYY-MM-DDThh:mm:ss`
+- `YYYY-MM-DDThh:mm:ss.sssssssss`
+- `YYYY-MM-DDThh:mm:ss.sssssss`
+
+Examples:
+- `2000-01-01T20:00:00`
+- `2000-01-01T20:00:00.999`
+- `2000-01-01T20:00:00.9999999`
+"""
+scalar LocalDateTime
+
+"""
+LocalTime represents a time of day, with no reference to a particular calendar, time zone, or date.
+
+Allowed patterns:
+- `hh:mm:ss.sssssssss`
+- `hh:mm:ss`
+
+Examples:
+- `20:00:00.999`
+- `20:00:00`
+"""
+scalar LocalTime
+
+"""
+An offset from UTC in seconds.
+ A positive value means that the local time is ahead of UTC (e.g. for Europe); a negative value means that the local time is behind UTC (e.g. for America).
+
+Allowed patterns:
+- `±hh:mm:ss`
+- `Z`
+
+Examples:
+- `+02:30:00`
+- `Z`
+"""
+scalar Offset
+
+"""
+A combination of a LocalDate and an Offset, to represent a date at a specific offset from UTC but without any time-of-day information.
+
+Allowed patterns:
+- `YYYY-MM-DD±hh:mm`
+- `YYYY-MM-DD±hh:mm (calendar)`
+
+Examples:
+- `2000-01-01Z`
+- `2000-01-01Z (ISO)`
+"""
+scalar OffsetDate
+
+"""
+A local date and time in a particular calendar system, combined with an offset from UTC.
+
+Allowed patterns:
+- `YYYY-MM-DDThh:mm:ss±hh:mm`
+- `YYYY-MM-DDThh:mm:ss.sssssssss±hh:mm (calendar)`
+
+Examples:
+- `2000-01-01T20:00:00Z`
+- `2000-01-01T20:00:00.999Z (ISO)`
+"""
+scalar OffsetDateTime
+
+"""
+A combination of a LocalTime and an Offset, to represent a time-of-day at a specific offset from UTC but without any date information.
+
+Allowed patterns:
+- `hh:mm:ss.sssssssss±hh:mm`
+- `hh:mm:ss±hh:mm`
+- `hh:mm:ss.sssssssss±hh:mm`
+
+Examples:
+- `20:00:00.999999999Z`
+- `20:00:00Z`
+- `20:00:00.999Z`
+"""
+scalar OffsetTime
+
+"""
+Represents a period of time expressed in human chronological terms: hours, days, weeks, months and so on.
+
+Pattern: `PnYnMnDTnHnMnS`
+Example: `P3Y6M4DT12H30M5S`
+"""
+scalar Period
+
+"""
+A LocalDateTime in a specific time zone and with a particular offset to distinguish between otherwise-ambiguous instants.
+A ZonedDateTime is global, in that it maps to a single Instant.
+"""
+scalar ZonedDateTime
