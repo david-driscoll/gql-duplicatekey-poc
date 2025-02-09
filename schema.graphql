@@ -1,37 +1,39 @@
 ﻿schema {
-  query: Query
+    query: Query
 }
 
 type NodaTimeOutput {
-  instant: Instant
-  localDate: LocalDate
-  localTime: LocalTime
-  localDateTime: LocalDateTime
-  offsetDateTime: OffsetDateTime
-  offsetTime: OffsetTime
-  period: Period
-  duration: Duration
-  zonedDateTime: ZonedDateTime
-  offset: Offset
-  isoDayOfWeek: IsoDayOfWeek
+    instant: Instant
+    # if I comment these out, then the build works...
+    #  localDate: LocalDate
+    #  localTime: LocalTime
+    #  localDateTime: LocalDateTime
+    offsetDateTime: OffsetDateTime
+    offsetTime: OffsetTime
+    period: Period
+    duration: Duration
+    zonedDateTime: ZonedDateTime
+    offset: Offset
+    isoDayOfWeek: IsoDayOfWeek
 }
 
 type Query {
-  nodaTimeTest(inputs: NodaTimeInput!): NodaTimeOutput!
+    nodaTimeTest(inputs: NodaTimeInput!): NodaTimeOutput!
 }
 
 input NodaTimeInput {
-  instant: Instant
-  localDate: LocalDate
-  localTime: LocalTime
-  localDateTime: LocalDateTime
-  offsetDateTime: OffsetDateTime
-  offsetTime: OffsetTime
-  period: Period
-  duration: Duration
-  zonedDateTime: ZonedDateTime
-  offset: Offset
-  isoDayOfWeek: IsoDayOfWeek
+    instant: Instant
+    # if I comment these out, then the build works...
+    #  localDate: LocalDate
+    #  localTime: LocalTime
+    #  localDateTime: LocalDateTime
+    offsetDateTime: OffsetDateTime
+    offsetTime: OffsetTime
+    period: Period
+    duration: Duration
+    zonedDateTime: ZonedDateTime
+    offset: Offset
+    isoDayOfWeek: IsoDayOfWeek
 }
 
 "The purpose of the `cost` directive is to define a `weight` for GraphQL types, fields, and arguments. Static analysis can use these weights when calculating the overall cost of a query or response."
@@ -50,9 +52,9 @@ this metadata during any step of the schema delivery flow,
 including composition, static analysis, and documentation.
 
 interface Book {
-  id: ID! @tag(name: "your-value")
-  title: String!
-  author: String!
+id: ID! @tag(name: "your-value")
+title: String!
+author: String!
 }
 """
 directive @tag("The name of the tag." name: String!) repeatable on SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE | UNION | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
@@ -86,7 +88,7 @@ scalar Instant
 
 """
 Equates the days of the week with their numerical value according to ISO-8601.
- Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5, Saturday = 6, Sunday = 7.
+Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5, Saturday = 6, Sunday = 7.
 """
 scalar IsoDayOfWeek
 
@@ -133,7 +135,7 @@ scalar LocalTime
 
 """
 An offset from UTC in seconds.
- A positive value means that the local time is ahead of UTC (e.g. for Europe); a negative value means that the local time is behind UTC (e.g. for America).
+A positive value means that the local time is ahead of UTC (e.g. for Europe); a negative value means that the local time is behind UTC (e.g. for America).
 
 Allowed patterns:
 - `±hh:mm:ss`
